@@ -455,7 +455,7 @@ handleAvailable msg = do
     Bitfield bf -> const     bf
 
   --thisBf <- getThisBitfield
-  thisBf <- undefined
+  thisBf <- error "handleAvailable"
   case msg of
     Have     ix
       | ix `BF.member`     thisBf -> return ()
@@ -471,7 +471,7 @@ handleTransfer (Request bix) = do
   case s of
     WaitingMetadata {..} -> return ()
     HavingMetadata  {..} -> do
-      bitfield <- undefined -- getThisBitfield
+      bitfield <- error "handleTransfer Request"  -- getThisBitfield
       upload   <- canUpload <$> use connStatus
       when (upload && ixPiece bix `BF.member` bitfield) $ do
         blk <- liftIO $ readBlock bix contentStorage
@@ -483,7 +483,7 @@ handleTransfer (Message.Piece   blk) = do
   case s of
     WaitingMetadata {..} -> return () -- TODO (?) break connection
     HavingMetadata  {..} -> do
-      isSuccess <- undefined -- withStatusUpdates (SS.pushBlock blk storage)
+      isSuccess <- error "handleTransfer Message.Piece" -- withStatusUpdates (SS.pushBlock blk storage)
       case isSuccess of
         Nothing -> liftIO $ throwIO $ userError "block is not requested"
         Just isCompleted -> do
@@ -505,16 +505,16 @@ handleTransfer (Cancel  bix) = filterQueue (not . (transferResponse bix))
 waitForMetadata :: Trigger
 waitForMetadata = do
   Session {..} <- asks connSession
-  needFetch    <- undefined --liftIO (isEmptyMVar infodict)
+  needFetch    <- error "waitForMetadata needFetch" --liftIO (isEmptyMVar infodict)
   when needFetch $ do
     canFetch   <- allowed ExtMetadata <$> use connExtCaps
     if canFetch
       then tryRequestMetadataBlock
-      else undefined -- liftIO (waitMVar infodict)
+      else error "waitForMetadata canFetch" -- liftIO (waitMVar infodict)
 
 tryRequestMetadataBlock :: Trigger
 tryRequestMetadataBlock = do
-  mpix <- lift $ undefined --withMetadataUpdates Metadata.scheduleBlock
+  mpix <- lift $ error "tryRequestMetadataBlock" --withMetadataUpdates Metadata.scheduleBlock
   case mpix of
     Nothing  -> error "tryRequestMetadataBlock"
     Just pix -> sendMessage (MetadataRequest pix)
@@ -528,7 +528,7 @@ handleMetadata (MetadataRequest pix) =
 
 handleMetadata (MetadataData   {..}) = do
   ih    <- asks connTopic
-  mdict <- lift $ undefined --withMetadataUpdates (Metadata.pushBlock piece ih)
+  mdict <- lift $ error "handleMetadata MetadataData" --withMetadataUpdates (Metadata.pushBlock piece ih)
   case mdict of
     Nothing   -> tryRequestMetadataBlock -- not completed, need all blocks
     Just dict -> do   -- complete, wake up payload fetch
@@ -536,7 +536,7 @@ handleMetadata (MetadataData   {..}) = do
       liftIO $ modifyMVar_ sessionState (haveMetadata dict)
 
 handleMetadata (MetadataReject  pix) = do
-  lift $ undefined -- withMetadataUpdates (Metadata.cancelPending pix)
+  lift $ error "handleMetadata MetadataReject" -- withMetadataUpdates (Metadata.cancelPending pix)
 
 handleMetadata (MetadataUnknown _  ) = do
   logInfoN "Unknown metadata message"
@@ -565,7 +565,7 @@ handleMessage (Extended  msg) = handleExtended msg
 exchange :: Wire Session ()
 exchange = do
   waitForMetadata
-  bf <- undefined --getThisBitfield
+  bf <- error "exchange" --getThisBitfield
   sendMessage (Bitfield bf)
   awaitForever handleMessage
 

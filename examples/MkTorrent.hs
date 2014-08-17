@@ -447,7 +447,7 @@ versioner prog ver = nullOption $ mconcat
     , value id
     , metavar ""
     , hidden
-    , reader $ const $ undefined -- Left $ ErrorMsg versionStr
+    , reader $ const $ (error "versioner") -- Left $ ErrorMsg versionStr
     ]
   where
     versionStr = prog ++ " version " ++ showVersion ver

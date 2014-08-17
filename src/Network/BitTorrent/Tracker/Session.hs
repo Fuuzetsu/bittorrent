@@ -286,7 +286,7 @@ collect f lst = (catMaybes . F.toList) <$> traverse f lst
 
 addTracker :: Session -> URI -> IO ()
 addTracker Session {..} uri = do
-  undefined
+  error "addTracker"
   send sessionEvents (TrackerAdded uri)
 
 removeTracker :: Manager -> Session -> URI -> IO ()
@@ -299,8 +299,8 @@ removeTracker m Session {..} uri = do
 
 -- | Return all known trackers.
 getTrackers :: Session -> IO [URI]
-getTrackers = undefined
+getTrackers = error "getTrackers"
 
 -- | Return trackers from torrent file and
 getTrustedTrackers :: Session -> IO [URI]
-getTrustedTrackers = undefined
+getTrustedTrackers = error "getTrustedTrackers"

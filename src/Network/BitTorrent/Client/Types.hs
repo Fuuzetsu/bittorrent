@@ -58,7 +58,7 @@ data Handle = Handle
 
 instance EventSource Handle where
   data Event Handle  = StatusChanged HandleStatus
-  listen Handle {..} = CS.listen undefined
+  listen Handle {..} = CS.listen (error "instance EventSource Handle")
 
 data Client = Client
   { clientPeerId       :: !PeerId

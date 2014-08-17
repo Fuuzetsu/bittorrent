@@ -67,9 +67,9 @@ posixEpoch = 1000000000000000000000000000000000000000000000000000000
 instance Applicative Cached where
   pure = Cached 0 posixEpoch posixEpoch
   f <*> c = Cached
-    { lastUpdated       = undefined
-    , minUpdateInterval = undefined
-    , updateInterval    = undefined
+    { lastUpdated       = error "lastUpdated: instance Applicative Cached"
+    , minUpdateInterval = error "minUpdateInterval: instance Applicative Cached"
+    , updateInterval    = error "updateInterval: instance Applicative Cached"
     , cachedData        = cachedData f (cachedData c)
     }
 
@@ -80,10 +80,10 @@ instance Alternative Cached where
 instance Monad Cached where
   return = pure
   Cached {..} >>= f = Cached
-    { lastUpdated       = undefined
-    , updateInterval    = undefined
-    , minUpdateInterval = undefined
-    , cachedData        = undefined
+    { lastUpdated       = error "lastUpdated: instance Monad Cached"
+    , updateInterval    = error "minUpdateInterval: instance Monad Cached"
+    , minUpdateInterval = error "updateInterval: instance Monad Cached"
+    , cachedData        = error "cachedData: instance Monad Cached"
     }
 
 instance Monoid (Cached a) where
@@ -121,7 +121,7 @@ newCached_ interval x = newCached interval interval x
 {-# INLINE newCached_ #-}
 
 expirationTime :: Cached a -> POSIXTime
-expirationTime Cached {..} = undefined
+expirationTime Cached {..} = error "expirationTime"
 
 isAlive :: Cached a -> IO Bool
 isAlive Cached {..} = do
@@ -129,16 +129,16 @@ isAlive Cached {..} = do
   return $ lastUpdated + updateInterval > currentTime
 
 isExpired :: Cached a -> IO Bool
-isExpired Cached {..} = undefined
+isExpired Cached {..} = error "isExpired"
 
 isStalled :: Cached a -> IO Bool
-isStalled Cached {..} = undefined
+isStalled Cached {..} = error "isStalled"
 
 canUpdate :: Cached a -> IO (Maybe NominalDiffTime)
-canUpdate = undefined --isStaled
+canUpdate = error "canUpdate" --isStaled
 
 shouldUpdate :: Cached a -> IO (Maybe NominalDiffTime)
-shouldUpdate = undefined -- isExpired
+shouldUpdate = error "shouldUpdate" -- isExpired
 
 tryTakeData :: Cached a -> IO (Maybe a)
 tryTakeData c = do

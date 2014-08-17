@@ -141,7 +141,7 @@ announceQ ih p NodeInfo {..} = do
   GotPeers {..} <- GetPeers ih <@> nodeAddr
   case peers of
     Left  ns
-      | False     -> undefined -- TODO check if we can announce
+      | False     -> error "announceQ" -- TODO check if we can announce
       | otherwise -> return (Left ns)
     Right ps -> do -- TODO *probably* add to peer cache
       Announced <- Announce False ih p grantedToken <@> nodeAddr

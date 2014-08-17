@@ -434,7 +434,7 @@ insertNode info = fork $ do
 -- TODO limit dht peer store in size (probably by removing oldest peers)
 
 refreshContacts :: DHT ip ()
-refreshContacts = undefined
+refreshContacts = error "refreshContacts"
 
 -- | Insert peer to peer store. Used to handle announce requests.
 insertPeer :: Eq ip => InfoHash -> PeerAddr ip -> DHT ip ()

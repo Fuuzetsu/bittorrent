@@ -30,10 +30,10 @@ withUpdates m = do
   let infoDictLen = fromIntegral $ BL.length $ BE.encode tInfoDict
   --mvar <- newMVar (nullStatus infoDictLen)
   --runUpdates mvar placeholderAddr m
-  undefined
+  error "withUpdates"
 
 simulateFetch :: InfoDict -> Updates s (Maybe InfoDict)
-simulateFetch dict = undefined
+simulateFetch dict = error "simulateFetch"
 
 spec :: Spec
 spec = do

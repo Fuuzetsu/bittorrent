@@ -127,8 +127,8 @@ instance Eq a => Monoid (PeerStore a) where
 -- | Can be used to store peers between invocations of the client
 -- software.
 instance Serialize (PeerStore a) where
-  get = undefined
-  put = undefined
+  get = error "get: instance Serialize (PeerStore a)"
+  put = error "put: instance Serialize (PeerStore a)"
 
 -- | Used in 'get_peers' DHT queries.
 lookup :: InfoHash -> PeerStore a -> [PeerAddr a]

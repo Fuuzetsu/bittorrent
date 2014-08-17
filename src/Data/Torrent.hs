@@ -665,7 +665,7 @@ instance Lint PieceInfo where
   lint pinfo @ PieceInfo {..}
     | BS.length (unHashList piPieceHashes) `rem` hashsize == 0
     , piPieceLength >= 0 = return pinfo
-    |       otherwise    = Left undefined
+    |       otherwise    = Left (error "instance Lint PieceInfo")
 
 
 putPieceInfo :: Data.Torrent.Put PieceInfo

@@ -584,7 +584,7 @@ defaultPorts :: [PortNumber]
 defaultPorts =  [6881..6889]
 
 _resolvePeerAddr :: (IPAddress i) => PeerAddr HostName -> PeerAddr i
-_resolvePeerAddr = undefined
+_resolvePeerAddr = error "_resolvePeerAddr"
 
 _peerSockAddr :: PeerAddr IP -> (Family, SockAddr)
 _peerSockAddr PeerAddr {..} =

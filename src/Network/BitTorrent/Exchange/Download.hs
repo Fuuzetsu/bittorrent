@@ -137,11 +137,11 @@ instance Download MetadataDownload (Piece BS.ByteString) where
           case parseInfoDict (BL.toStrict chunks) t of
             Right x -> do
                 pendingPieces .= []
-                return undefined -- (Just x)
+                return (error "Right: instance Download MetadataDownload") -- (Just x)
             Left  e -> do
                 pendingPieces .= []
                 bucket .= Block.empty (Block.size b)
-                return undefined -- Nothing
+                return (error "Left: instance Download MetadataDownload") -- Nothing
    where
       -- todo use incremental parsing to avoid BS.concat call
       parseInfoDict :: BS.ByteString -> InfoHash -> Result InfoDict
